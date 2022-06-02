@@ -68,7 +68,7 @@ diagnosticMode:
 ## @param image.debug Enable image debug mode
 ##
 image:
-  repository: "development-341419/bitnami/redis"
+  repository: "gcr.io/providermdm-gke-dev/bitnami/redis"
   tag: 6.2.7-debian-10-r23
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
