@@ -13,7 +13,7 @@
 ## @section Common parameters
 ##
 global:
-  imageRegistry: ""
+  imageRegistry: "gcr.io"
 
 ## @param kubeVersion Override Kubernetes version
 ##
