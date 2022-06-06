@@ -17,7 +17,7 @@ sqlproxy:
     secretName: sqlproxyssl #Name of the secret
 
   image:
-    repository: soterosoft/sqlproxy
+    repository: gcr.io/providermdm-gke-dev/soterosoft/sqlproxy
     tag: 1.0.34
 
   resources: {}
@@ -44,7 +44,7 @@ detectapi:
   replicaCount: 1
 
   image:
-    repository: soterosoft/detect-api
+    repository: gcr.io/providermdm-gke-dev/soterosoft/detect-api
     tag: 0.2
   resources: {}
   serviceAccount:
@@ -64,7 +64,7 @@ detectapi:
 #only applicable if sqlproxy.anomaly.detect is true
 redisbloom:
   image:
-    repository: soterosoft/redis-bloom
+    repository: gcr.io/providermdm-gke-dev/soterosoft/redis-bloom
     tag: 0.2
 
   persistence:
@@ -90,7 +90,7 @@ redisbloom:
 
 tenantapi:
   image:
-    repository: soterosoft/tenant-api
+    repository: gcr.io/providermdm-gke-dev/soterosoft/tenant-api
     tag: 1.0.21
 
   ssl:
@@ -139,5 +139,5 @@ vault:
 
 tools:
   image:
-    repository: soterosoft/sotero-tools
+    repository: gcr.io/providermdm-gke-dev/soterosoft/sotero-tools
     tag: 1.0.14

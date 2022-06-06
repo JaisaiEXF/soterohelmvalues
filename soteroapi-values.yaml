@@ -9,7 +9,7 @@
 licenseKey:
 
 image:
-  repository: soterosoft/sotero-api
+  repository: gcr.io/providermdm-gke-dev/soterosoft/sotero-api
   tag: 1.0.38
 
 #Adjust the number of soteroapi instances depending on your expected load
@@ -44,7 +44,7 @@ vault:
 mysql:
   install: true
   image:
-    repository: mysql
+    repository: gcr.io/providermdm-gke-dev/mysql
     tag: "5.7"
 
   persistence:
@@ -75,7 +75,7 @@ redis:
   # We will use the bitnami redis cluster already installed for caching too
   install: false
   image:
-    repository: redis
+    repository: gcr.io/providermdm-gke-dev/redis
     tag: 5.0
   #if install is false provide the REDIS URL
   writeUrl: redis://bitnami-redis-master.sotero.svc.cluster.local:6379
@@ -168,7 +168,7 @@ adminServiceAnnotations: {}
 
 tools:
   image:
-    repository: soterosoft/sotero-tools
+    repository: gcr.io/providermdm-gke-dev/soterosoft/sotero-tools
     tag: 1.0.14
 
 

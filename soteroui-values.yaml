@@ -4,7 +4,7 @@
 #   Secrets regcred, and nginx created as specified in the doc
 
 image:
-  repository: soterosoft/sotero-ui
+  repository: gcr.io/providermdm-gke-dev/soterosoft/sotero-ui
   tag: 1.0.18
 
 soteroapi:

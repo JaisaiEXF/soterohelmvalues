@@ -8,7 +8,7 @@
 nifi:
   enabled: true
   image:
-    repository: soterosoft/nifi
+    repository: gcr.io/providermdm-gke-dev/soterosoft/nifi
     tag: 1.0.28
   ## Persist data to a persistent volume
   persistence:
@@ -41,7 +41,7 @@ nifi:
 tmh:
   enabled: true
   image:
-    repository: soterosoft/sotero-tenant-mh
+    repository: gcr.io/providermdm-gke-dev/soterosoft/sotero-tenant-mh
     tag: 1.0.28
 
   serviceAccount:
@@ -93,5 +93,5 @@ queue:
 
 tools:
   image:
-    repository: soterosoft/sotero-tools
+    repository: gcr.io/providermdm-gke-dev/soterosoft/sotero-tools
     tag: 1.0.14
