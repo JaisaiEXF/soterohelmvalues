@@ -1,0 +1,143 @@
+# Sample values for tenantdata chart installation
+# Assumptions:
+#   installation namespace soterp
+#   Secrets regcred, and sqlproxyssl created as specified in the doc
+#   Sotero API installed in the same namespace
+
+sqlproxy:
+  #Adjust the number of sqlproxy instances depending on your expected load
+  replicaCount: 2
+
+  # Configure SSL keys for sql proxy
+  # You need to create a secret in the namespace using the following command
+  # kubectl create secret generic sqlproxyssl --from-file=keystore.p12=${KEYSTORE_FILE} --from-file=keystore.password=${KEYSTORE_PASSWORD_FILE}
+  ssl:
+    enabled: true
+    type: PKCS12
+    secretName: sqlproxyssl #Name of the secret
+
+  image:
+    repository: soterosoft/sqlproxy
+    tag: 1.0.34
+
+  resources: {}
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: false
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name:
+
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  serviceAnnotations: {}
+
+anomaly:
+  detect: false
+
+#only applicable if anomaly.detect is true
+detectapi:
+  replicaCount: 1
+
+  image:
+    repository: soterosoft/detect-api
+    tag: 0.2
+  resources: {}
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: false
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name:
+
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  serviceAnnotations: {}
+
+#only applicable if sqlproxy.anomaly.detect is true
+redisbloom:
+  image:
+    repository: soterosoft/redis-bloom
+    tag: 0.2
+
+  persistence:
+    accessMode: ReadWriteOnce
+    size: 2Gi
+    annotations: {}
+
+  resources: {}
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: false
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name:
+
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  serviceAnnotations: {}
+  podAnnotations: {}
+
+tenantapi:
+  image:
+    repository: soterosoft/tenant-api
+    tag: 1.0.21
+
+  ssl:
+    enabled: true
+    type: PKCS12
+    secretName: sqlproxyssl #Name of the secret
+
+
+  resources: {}
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: false
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name:
+
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  serviceAnnotations: {}
+
+soteroapi:
+  url: "http://soteroapi:45671"
+
+  #Proxy user name and encrypted password.
+  #You can get the encrypted value of the current proxy password by invoking GET method on /serviceaccounts from main API
+  #You can generate a new encrypted proxy password by invoking PUT method on /serviceaccounts from main API
+  user: soteroproxy
+  password: "ATxgI8sqhmEP3CGTB5f16I4YtAd+kljX7ytxhGxn1hPCRlIrwQ=="
+
+# Update vault address and token to access sotero encryption keys
+vault:
+  address: "http://vault:8200" # Change this to your vault-address
+  # specify vault namespace if needed
+  #namespace:
+
+  # Enter vault service token
+  #token:  your-vault-token-here
+
+  #Or enable approle based authentication
+  #authMethod: approle
+  #roleId: "role id"
+  #secretId: "secret id for the role"
+
+tools:
+  image:
+    repository: soterosoft/sotero-tools
+    tag: 1.0.14

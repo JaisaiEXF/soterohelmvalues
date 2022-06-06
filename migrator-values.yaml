@@ -1,0 +1,97 @@
+# Sample values for migrator chart installation
+# Assumptions:
+#   installation namespace sotero
+#   Secret regcred created as specified in the doc
+#   Bitnami Redis Helm chart is already installed
+
+
+nifi:
+  enabled: true
+  image:
+    repository: soterosoft/nifi
+    tag: 1.0.28
+  ## Persist data to a persistent volume
+  persistence:
+    accessMode: ReadWriteOnce
+    size: 20Gi #wThis will need to be increased for initial migration of large datasets
+    annotations: {}
+
+  threadCount: 12
+  jvmMemory: 8g #increase this to 16g or more for migrating large datasets first time and then you can scale it down,
+  # You may also need to customize resource limits below
+  resources: {}
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: false
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name:
+
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  serviceAnnotations: {}
+  podAnnottaions: {}
+
+tmh:
+  enabled: true
+  image:
+    repository: soterosoft/sotero-tenant-mh
+    tag: 1.0.28
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: false
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name:
+
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  podAnnottaions: {}
+
+tenantapi:
+  #Enter the URL of Tenant API deployed using tenant data helm chart (see tenant data chart).
+  url: http://tenantdata-tenantapi:45672
+
+  #Nifi user name and encrypted password.
+  #You can get the encrypted value of the current nifi password by invoking GET method on /serviceaccounts from main API
+  #You can generate a new encrypted nifi password by invoking PUT method on /serviceaccounts from main API
+  user: soteronifi
+  password: "ATxgI8sFj7hg4DzbAYRHjq9ZzcVwHcWFyFpJK/OydlgTCFTKWw=="
+
+# Update vault address and token to access sotero encryption keys
+vault:
+  address: http://vault:8200 # Change this to your vault-address
+  # specify vault namespace if needed
+  #namespace:
+
+  # Enter vault service token.
+  #token:  your-vault-token-here
+
+  #Or enable approle based authentication
+  #authMethod: approle
+  #roleId: "role id"
+  #secretId: "secret id for the role"
+
+queue:
+  ## REDIS queues for on-premise deployment.
+  type: redis
+  request: redis://bitnami-redis-master.sotero.svc.cluster.local:6379/tenant:request:{orgid}
+  response: redis://bitnami-redis-master.sotero.svc.cluster.local:6379/tenant:response:{orgid}
+  status: redis://bitnami-redis-master.sotero.svc.cluster.local:6379/tenant:common:status
+
+tools:
+  image:
+    repository: soterosoft/sotero-tools
+    tag: 1.0.14

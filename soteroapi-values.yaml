@@ -1,0 +1,176 @@
+# Sample values for soteroapi chart installation
+# Assumptions:
+#   installation namespace soterp
+#   Secrets regcred, nginx, and sqlproxyssl created as specified in the namespace as specified in the documentation
+#   Bitnami Redis cluster Helm chart is already installed
+
+
+#Enter your Sotero license key
+licenseKey:
+
+image:
+  repository: soterosoft/sotero-api
+  tag: 1.0.38
+
+#Adjust the number of soteroapi instances depending on your expected load
+replicaCount: 1
+
+#Access Token Timeout
+loginTimeout: "3600"
+
+#Log Level
+logLevel: INFO
+
+#Number of days when password expires
+passwordExpireDays: 90
+
+# Update vault address and token to access sotero encryption keys
+vault:
+  address: "http://vault:8200" # Change this to your vault-address
+  # specify vault namespace if needed
+  #namespace:
+
+  # A vault service token should be generated using the sotero-token role so that it has
+  # full access to sotero/* and transit/* path under the namespace (e.g. vault token create -role=sotero-token)
+  # This token will be renewed periodically
+  # Uncomment the following line and enter the token
+  #token:  your-vault-token-here
+
+  #Or enable approle based authentication
+  #authMethod: approle
+  #roleId: "role id"
+  #secretId: "secret id for the role"
+
+mysql:
+  install: true
+  image:
+    repository: mysql
+    tag: "5.7"
+
+  persistence:
+    ## MySQL Data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "gp2"
+    accessMode: ReadWriteOnce
+    size: 10Gi
+    annotations: {}
+    #If you want to use pre-existing volume claim, specify the following
+    # existingClaim:
+
+  dbName: sotero
+  dbUser: soterodbuser
+  #change the password below
+  dbPassword: sotero_ZC43MDCX5mte1mzi
+
+  #if install is false provide the mysql database host and port to access the external sotero metadadata database already setup and initialized
+  #host:
+  #port:
+
+#Local Redis for caching
+redis:
+  # We will use the bitnami redis cluster already installed for caching too
+  install: false
+  image:
+    repository: redis
+    tag: 5.0
+  #if install is false provide the REDIS URL
+  writeUrl: redis://bitnami-redis-master.sotero.svc.cluster.local:6379
+  readUrl: redis://bitnami-redis-replicas.sotero.svc.cluster.local:6379
+
+
+#Setup ingres for SSL/TLS and for UI to access API
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://sotero.1199nbf.net" # Change this
+
+  host: "sotero.1199nbf.net" # Change this
+  tls:
+    secretName: tls-secret
+
+#If ingress is disabled, you can setup SSL at API service level and then enable CORS at api level for UI to talk to API
+#service:
+#  type: LoadBalancer
+#  port: 443
+#ssl:
+#  enabled: true
+#  secretName: tls-secret
+#cors:
+#  enabled: true
+#  origin: # Specify the sotero ui host name (e.g. "https://secure.soterosoft.com")
+
+#If ingress is disabled, enable Web security headers at the container level
+#securityHeaders: true
+
+#Specify settings for Audit Reports, if auditReports are enabled in the system. You also need to install soteroaudit chart
+audit:
+  enabled: false
+  elastic:
+    url: "http://elasticsearch-master:9200"
+    index: sotero-audit-*
+    #if your Elasticsearch server requires authentication create a secret with username and password and enter secretName below
+    #kubectl create secret generic es-secret --from-literal=username=<username> --from-literal=password=<password>
+    #secretName: es-secret
+
+#Optional settings for reset password feature
+mail:
+  smtp:
+    host: #sepcify smtp server name
+    port: 587
+  user: #specify mail user
+  password: specify mail password
+  from: # specify mail from address
+  endpointUrl: # Specify the sotero ui url (e.g. "https://secure.soterosoft.com")
+
+apiOnly: false
+
+queue:
+  ## REDIS queues for on-premise deployment
+  type: redis
+  request: redis://bitnami-redis-master.sotero.svc.cluster.local:6379/tenant:request:{orgid}
+  response: redis://bitnami-redis-master.sotero.svc.cluster.local:6379/tenant:response:{orgid}
+  status: redis://bitnami-redis-master.sotero.svc.cluster.local:6379/tenant:common:status
+
+#Resource Limits
+resources: {}
+  # To specify resource limits, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 2000m
+  #   memory: 1024Mi
+  # requests:
+  #   cpu: 1000m
+  #   memory: 512Mi
+
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+securityContext: {}
+serviceAnnotations: {}
+adminServiceAnnotations: {}
+
+tools:
+  image:
+    repository: soterosoft/sotero-tools
+    tag: 1.0.14
+
+
+# To get the fulll list of values that you can customize, please extract and see the values.yaml file from the chart
+# tar xvfz soteroapi-<version>.tgz ./soteroapi/values.yaml

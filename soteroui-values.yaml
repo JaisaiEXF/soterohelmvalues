@@ -1,0 +1,50 @@
+# Sample values for soteroui chart installation
+# Assumptions:
+#   installation namespace sotero
+#   Secrets regcred, and nginx created as specified in the doc
+
+image:
+  repository: soterosoft/sotero-ui
+  tag: 1.0.18
+
+soteroapi:
+  url: "https://sotero.1199nbf.net" # Change this to match the url for Sotero API ingress endpoint
+
+
+#Setup ingres for SSL/TLS
+ingress:
+  enabled: true
+  host: "sotero.1199nbf.net" #change this - fully qualified host name that you will be accessing UI
+  tls:
+    secretName: tls-secret
+
+
+#If ingress is disabled, you can setup SSL at container level
+#service:
+#  type: LoadBalancer
+#  port: 443
+#ssl:
+#  enabled: true
+#  secretName: tls-secret
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+
+securityContext: {}
+
+
+
+
