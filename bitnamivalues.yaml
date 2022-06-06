@@ -13,7 +13,7 @@
 ## @section Common parameters
 ##
 global:
-  imageRegistry: ""
+  imageRegistry: "gcr.io"
 
 ## @param kubeVersion Override Kubernetes version
 ##
@@ -68,7 +68,7 @@ diagnosticMode:
 ## @param image.debug Enable image debug mode
 ##
 image:
-  repository: "gcr.io/providermdm-gke-dev/bitnami/redis"
+  repository: "providermdm-gke-dev/bitnami/redis"
   tag: 6.2.7-debian-10-r23
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -886,7 +886,7 @@ sentinel:
   ## @param sentinel.image.debug Enable image debug mode
   ##
   image:
-    repository: "gcr.io/providermdm-gke-dev/bitnami/redis-sentinel"
+    repository: "providermdm-gke-dev/bitnami/redis-sentinel"
     tag: 6.2.7-debian-10-r23
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
@@ -1284,7 +1284,7 @@ metrics:
   ## @param metrics.image.pullSecrets Redis&trade; Exporter image pull secrets
   ##
   image:
-    repository: "gcr.io/providermdm-gke-dev/bitnami/redis-exporter"
+    repository: "providermdm-gke-dev/bitnami/redis-exporter"
     tag: 1.37.0-debian-10-r63
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -1474,7 +1474,7 @@ volumePermissions:
   ## @param volumePermissions.image.pullSecrets Bitnami Shell image pull secrets
   ##
   image:
-    repository: "gcr.io/providermdm-gke-dev/bitnami/bitnami-shell"
+    repository: "providermdm-gke-dev/bitnami/bitnami-shell"
     tag: 10-debian-10-r432
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -1518,7 +1518,7 @@ sysctl:
   ## @param sysctl.image.pullSecrets Bitnami Shell image pull secrets
   ##
   image:
-    repository: "gcr.io/providermdm-gke-dev/bitnami/bitnami-shell"
+    repository: "providermdm-gke-dev/bitnami/bitnami-shell"
     tag: 10-debian-10-r432
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
