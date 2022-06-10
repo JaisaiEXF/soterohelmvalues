@@ -125,7 +125,7 @@ soteroapi:
 
 # Update vault address and token to access sotero encryption keys
 vault:
-  address: "http://vault:8200" # Change this to your vault-address
+  address: "http://vault-0.vault-internal.vault-consul.svc.cluster.local:8200" # Change this to your vault-address
   # specify vault namespace if needed
   #namespace:
 

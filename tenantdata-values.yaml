@@ -133,9 +133,9 @@ vault:
   #token:  your-vault-token-here
 
   #Or enable approle based authentication
-  #authMethod: approle
-  #roleId: "role id"
-  #secretId: "secret id for the role"
+  authMethod: approle
+  roleId: ae7a17f4-e509-e5db-aaeb-2108f3f9f475
+  secretId: a44f550c-cb3c-d0c2-b5fd-82a5c02a937b
 
 tools:
   image:
